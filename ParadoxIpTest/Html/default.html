@@ -1,0 +1,23 @@
+﻿
+<!DOCTYPE HTML PUBLIC"->
+/W3C//DTD HTML 4.01 Frameset//EN""http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="webstyles.css" />
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <script type="text/javascript" src="commun.js"></script>
+    <script type="text/javascript">var i, currCount = 0; var tbl_imgs, preload_image, loaded; tbl_imgs = new Array("checkbox.png", "status2.png", "l_droite.png", "l_trouble.png", "buttons.png", "paradox.png", "fl.png"); preload_image = new Array(); loaded = new Array(); function loadImages() { for (i = 0; i < tbl_imgs.length; i++) { preload_image[i] = new Image(); preload_image[i].src = tbl_imgs[i]; } for (i = 0; i < preload_image.length; i++) { loaded[i] = false; } checkLoad(); } function checkLoad() { if (currCount == preload_image.length) { return; } for (i = 0; i < preload_image.length; i++) { if (loaded[i] == false && preload_image[i].complete) { loaded[i] = true; currCount++; } } timerID = setTimeout("top.checkLoad()", 10); }</script>
+    <title>Paradox IP Module</title>
+</head>
+<frameset cols="100%,0">
+    <frame src="waitaff.html" name="mainframe" frameborder="0" scrolling="auto" noresize="noresize" />
+    <frame src="waitlive.html" name="liveframe" frameborder="0" scrolling="auto" noresize="noresize" />
+    <noframes>
+        <body>
+            <p>Framesets not supported.Please upgrade your browser so that you can use this setup tool</p>
+        </body>
+    </noframes>
+</frameset>
+</html>

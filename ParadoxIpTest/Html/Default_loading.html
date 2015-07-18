@@ -1,0 +1,76 @@
+﻿<!DOCTYPE HTML PUBLIC "-<html">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="webstyles.css" />
+    <script type="text/javascript" src="langue.js"></script>
+    <title></title>
+</head>
+<body>
+    <div id="WAIT" style="margin-top: 60px;">
+        <table>
+            <tbody>
+                <tr>
+                    <td align="middle">
+                        <div class="box" style="width: 460px;">
+                            <div class="box-title strips">Please wait...</div>
+                            <div class="box-content">
+                                <table class="loading-steps">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 16px; padding: 10px;">
+                                                <div id="d0" class="checkbox checkbox-check"></div>
+                                            </td>
+                                            <td id="bold0">
+                                                <div style="margin-top: 3px;">Connect to panel</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 16px; padding: 10px;">
+                                                <div id="d1" class="checkbox checkbox-check"></div>
+                                            </td>
+                                            <td id="bold1">
+                                                <div style="margin-top: 3px;">Retrieve user information</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 16px; padding: 10px;">
+                                                <div id="d2" class="checkbox checkbox-check"></div>
+                                            </td>
+                                            <td id="bold2">
+                                                <div style="margin-top: 3px;">Retrieve system data</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 16px; padding: 10px;">
+                                                <div id="d3" class="checkbox checkbox-check"></div>
+                                            </td>
+                                            <td id="bold3">
+                                                <div style="margin-top: 3px;">Check system status</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 16px; padding: 10px;">
+                                                <div id="d4" class="checkbox checkbox-uncheck"></div>
+                                            </td>
+                                            <td id="bold4">
+                                                <div style="margin-top: 3px;">Loading web interface</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">document.getElementById("WAIT").innerHTML = parent.waitaff(); parent.waitinit();</script>
+</body>
+</html>

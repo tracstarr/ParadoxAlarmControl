@@ -1,0 +1,44 @@
+﻿
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <form name="statuslive" action="statuslive.html" method="get">
+        <input type='hidden' name='area' />
+        <input type='hidden' name='value'>
+    </form>
+    <script type='text/javascript'>
+        var hebrew = "0";
+        tbl_statuszone = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        var stayd = "0";
+        var option = "235";
+        tbl_useraccess = new Array(8, 8, 0, 0);
+        tbl_alarmes = new Array();
+        tbl_troubles = new Array();
+
+        if (top.mainframe.formframe && typeof (top.mainframe.formframe.startstatus) != "undefined") {
+            if (top.menu_currentitem == 0) {
+                if (top.mainframe.formframe.startstatus) {
+                    top.st_init();
+                    top.savedata(tbl_useraccess, tbl_statuszone, -1, option);
+                    top.mainframe.formframe.document.getElementById('DS').innerHTML = top.st_affdata("Homestead", tbl_useraccess, hebrew);
+                    top.st_affallzonealarm();
+                    top.Chargement();
+                    top.mainframe.formframe.st_startblink();
+                    top.mainframe.formframe.startstatus = 0;
+                }
+                top.updatedata(tbl_useraccess, tbl_statuszone, stayd, option);
+                top.lostcom = 120;
+                top.updatedata_al(tbl_alarmes, hebrew);
+                top.updatedata_tr(tbl_troubles);
+                setTimeout('window.location.replace("statuslive.html")', 2000);
+            }
+        }
+        if (top.subrequest == 1) {
+            top.makesubmit();
+        }
+    </script>
+</body>
+</html>
