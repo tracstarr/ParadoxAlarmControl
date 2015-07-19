@@ -11,3 +11,5 @@ Must use PhantomJS 2.45 and related nuget packages for selenium. The nuget packa
 
 Swagger is used to allow manually testing endpoints. It can be reached at http://localhost:8876/swagger-ui (or whatever ip/port you setup).
 
+The Linux build is untested. You will need a PhantomJS linux build.
+
