@@ -1,6 +1,6 @@
 ﻿using ServiceStack;
 
-namespace Paradox.WinService.Request
+namespace Paradox.WebServices.Request
 {
     [Route("/status", "GET", Summary = "Get the current status of your Paradox Controller.")]
 

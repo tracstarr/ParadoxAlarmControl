@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using Funq;
-using Paradox.WinService.Services;
-using Paradox.WinService.Settings;
+using Paradox.WebServices.Services;
+using Paradox.WebServices.Settings;
 using ParadoxIp.Managers;
 using ParadoxIp.Model;
 using ServiceStack;
@@ -10,7 +10,7 @@ using ServiceStack.Api.Swagger;
 using ServiceStack.Text;
 using SettingsProviderNet;
 
-namespace Paradox.WinService
+namespace Paradox.WebServices
 {
     public class ParadoxAppListenerHost
         : AppHostHttpListenerBase

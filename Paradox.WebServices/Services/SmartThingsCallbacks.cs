@@ -1,9 +1,9 @@
-﻿using Paradox.WinService.Settings;
+﻿using Paradox.WebServices.Settings;
 using ParadoxIp.Enum;
 using ParadoxIp.Model;
 using RestSharp;
 
-namespace Paradox.WinService.Services
+namespace Paradox.WebServices.Services
 {
     /// This functionality is directly linked to the SmartThings app. The endpoints are defined there that are used.
     internal class SmartThingsCallbacks

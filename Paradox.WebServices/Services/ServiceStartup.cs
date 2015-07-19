@@ -5,7 +5,7 @@ using ParadoxIp.Model;
 using ServiceStack;
 using ServiceStack.Logging;
 
-namespace Paradox.WinService.Services
+namespace Paradox.WebServices.Services
 {
     public static class ServiceStartup
     {

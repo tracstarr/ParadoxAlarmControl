@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using Paradox.WinService.Request;
-using Paradox.WinService.Response;
-using Paradox.WinService.Settings;
+using Paradox.WebServices.Request;
+using Paradox.WebServices.Response;
+using Paradox.WebServices.Settings;
 using ParadoxIp.Enum;
 using ParadoxIp.Managers;
 using ServiceStack;
 
-namespace Paradox.WinService.Services
+namespace Paradox.WebServices.Services
 {
     public class ParadoxService : Service
     {

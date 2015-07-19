@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C952F9
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.Mono.Daemon", "Paradox.Mono.Daemon\Paradox.Mono.Daemon.csproj", "{D69BCBBF-4779-492A-BB38-2F459A948AAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices", "Paradox.WebServices\Paradox.WebServices.csproj", "{C1BFBE4B-2125-49D4-84B7-E6CBEC92CA42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,14 @@ Global
 		{F74486FD-84A8-46C4-ADF8-7402CE06235F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F74486FD-84A8-46C4-ADF8-7402CE06235F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F74486FD-84A8-46C4-ADF8-7402CE06235F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69BCBBF-4779-492A-BB38-2F459A948AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69BCBBF-4779-492A-BB38-2F459A948AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69BCBBF-4779-492A-BB38-2F459A948AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69BCBBF-4779-492A-BB38-2F459A948AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1BFBE4B-2125-49D4-84B7-E6CBEC92CA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BFBE4B-2125-49D4-84B7-E6CBEC92CA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BFBE4B-2125-49D4-84B7-E6CBEC92CA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BFBE4B-2125-49D4-84B7-E6CBEC92CA42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

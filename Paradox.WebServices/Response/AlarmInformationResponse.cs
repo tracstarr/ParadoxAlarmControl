@@ -1,4 +1,4 @@
-namespace Paradox.WinService.Response
+namespace Paradox.WebServices.Response
 {
     public class AlarmInformationResponse: ParadoxBaseResponse
     {

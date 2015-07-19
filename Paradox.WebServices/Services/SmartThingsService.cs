@@ -1,10 +1,10 @@
-﻿using Paradox.WinService.Request;
-using Paradox.WinService.Response;
-using Paradox.WinService.Settings;
+﻿using Paradox.WebServices.Request;
+using Paradox.WebServices.Response;
+using Paradox.WebServices.Settings;
 using ServiceStack;
 using SettingsProviderNet;
 
-namespace Paradox.WinService.Services
+namespace Paradox.WebServices.Services
 {
     public class SmartThingsService : IService
     {

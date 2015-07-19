@@ -1,4 +1,4 @@
-﻿namespace Paradox.WinService.Settings
+﻿namespace Paradox.WebServices.Settings
 {
     public class SmartThingsSettings
     {

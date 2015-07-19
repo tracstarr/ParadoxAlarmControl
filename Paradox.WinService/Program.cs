@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.ServiceProcess;
 using System.Threading;
-using Paradox.WinService.Services;
+using Paradox.WebServices.Services;
 
 namespace Paradox.WinService
 {

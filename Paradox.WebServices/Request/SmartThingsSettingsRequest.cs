@@ -1,6 +1,6 @@
 using ServiceStack;
 
-namespace Paradox.WinService.Request
+namespace Paradox.WebServices.Request
 {
     [Route("/configure", "PUT", Summary = "Configure SmartThings Hub information.")]
     public class SmartThingsSettingsRequest
