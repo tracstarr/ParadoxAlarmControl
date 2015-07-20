@@ -35,7 +35,7 @@ namespace ParadoxIpTest
 
                 Assert.IsNotEmpty(manager.TroubleCodes);
                 Assert.IsNotEmpty(manager.Devices);
-                Assert.IsNotEmpty(manager.PartitionNames);
+                Assert.IsNotEmpty(manager.Partitions);
             }
 
         }

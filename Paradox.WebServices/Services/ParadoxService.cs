@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Paradox.WebServices.Request;
-using Paradox.WebServices.Response;
+using Paradox.WebServices.ServiceModel.Model;
+using Paradox.WebServices.ServiceModel.Request;
+using Paradox.WebServices.ServiceModel.Response;
 using Paradox.WebServices.Settings;
 using ParadoxIp.Enum;
 using ParadoxIp.Managers;
@@ -56,8 +58,28 @@ namespace Paradox.WebServices.Services
 
         public AlarmDeviceListResponse Get(AlarmDeviceListRequest request)
         {
+            var response = new AlarmDeviceListResponse() {Action = "devices", Devices = new List<Device>()};
             manager.GetAlarmInformation();
-            return new AlarmDeviceListResponse() { Action = "devices", Devices = manager.Devices };
+
+            foreach (var device in manager.Devices)
+            {
+                response.Devices.Add(new Device(){Id = device.ZoneId, Name = device.Name, DeviceType = device.DeviceType.ToString()});
+            }
+
+            return response;
+        }
+
+        public AlarmPartitionListResponse Get(AlarmPartitionListRequest request)
+        {
+            var response = new AlarmPartitionListResponse() {Action = "partitions", Partitions = new List<Partition>()};
+            manager.GetAlarmInformation();
+
+            foreach (var partition in manager.Partitions)
+            {
+                response.Partitions.Add(new Partition(){Id = (int)partition.Number, Name = partition.Name});
+            }
+
+            return response;
         }
 
         public bool Get(StartStatusCheckRequest request)

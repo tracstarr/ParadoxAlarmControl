@@ -68,20 +68,6 @@
   <ItemGroup>
     <Compile Include="ParadoxAppListenerHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request\AlarmDeviceListRequest.cs" />
-    <Compile Include="Request\AlarmInformationRequest.cs" />
-    <Compile Include="Request\LoginToAlarmModuleRequest.cs" />
-    <Compile Include="Request\SetStatusUpdateWebhookUrlRequest.cs" />
-    <Compile Include="Request\SmartThingsSettingsRequest.cs" />
-    <Compile Include="Request\SmartThingsSettingsResetRequest.cs" />
-    <Compile Include="Request\StartStatusCheckRequest.cs" />
-    <Compile Include="Request\StatusRequest.cs" />
-    <Compile Include="Request\StopStatusCheckRequest.cs" />
-    <Compile Include="Request\ZoneStatusRequest.cs" />
-    <Compile Include="Response\AlarmDeviceListResponse.cs" />
-    <Compile Include="Response\AlarmInformationResponse.cs" />
-    <Compile Include="Response\ParadoxBaseResponse.cs" />
-    <Compile Include="Response\StatusResponse.cs" />
     <Compile Include="Services\ParadoxService.cs" />
     <Compile Include="Services\ServiceStartup.cs" />
     <Compile Include="Services\SmartThingsCallbacks.cs" />
@@ -92,6 +78,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Paradox.WebServices.ServiceModel\Paradox.WebServices.ServiceModel.csproj">
+      <Project>{75533b60-3776-48b5-a902-59cd90a10330}</Project>
+      <Name>Paradox.WebServices.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ParadoxIp\ParadoxIp.csproj">
       <Project>{c3c19bed-60f3-4635-88ca-b3fe1dfa60c0}</Project>
       <Name>ParadoxIp</Name>

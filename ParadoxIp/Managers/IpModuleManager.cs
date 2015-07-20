@@ -32,7 +32,7 @@ namespace ParadoxIp.Managers
         private ReadOnlyCollection<DeviceStatus> previousDeviceStatus;
 
         public IpModule Module { get; private set; }
-        public List<string> PartitionNames { get; set; }
+        public List<Partition> Partitions { get; set; }
         public bool IsLoggedIn { get; set; }
         public string SystemName { get; set; }
         private string MainWindowHandle { get; set; }
@@ -261,11 +261,19 @@ namespace ParadoxIp.Managers
                 Devices.Add(device);
             }
 
-            PartitionNames = new List<string>();
+            Partitions = new List<Partition>();
 
             for (int i = 0; i < usedAreas; i++)
             {
-                PartitionNames.Add(areas[i]);
+                var p = new Partition()
+                {
+                    Name = areas[i],
+                    Number = (PartitionNumber) i,
+                    PreviousStatus = PartitionStatus.Unknown,
+                    Status = PartitionStatus.Unknown
+                };
+
+                Partitions.Add(p);
             }
         }
         private DeviceType ParseDeviceType(string name)

@@ -1,4 +1,4 @@
-﻿namespace Paradox.WebServices.Response
+﻿namespace Paradox.WebServices.ServiceModel.Response
 {
     public class StatusResponse : ParadoxBaseResponse
     {

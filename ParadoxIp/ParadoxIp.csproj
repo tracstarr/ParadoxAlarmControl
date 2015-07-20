@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\AlarmMode.cs" />
+    <Compile Include="Enum\LoginError.cs" />
     <Compile Include="Events\AlarmStatusEventArgs.cs" />
     <Compile Include="Enum\DeviceType.cs" />
     <Compile Include="Enum\IpModuleType.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Model\AlarmPanelVersion.cs" />
     <Compile Include="Managers\ParadoxNotificationListener.cs" />
     <Compile Include="Enum\PartitionStatus.cs" />
+    <Compile Include="Model\Partition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enum\PartitionNumber.cs" />
     <Compile Include="Enum\DeviceStatus.cs" />

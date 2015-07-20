@@ -26,17 +26,12 @@ preferences {
      page(name:"paradoxServiceConnectPage", title:"Paradox Service Connect", content:"paradoxServiceConnectPage", refreshTimeout:2, install:true)
      
      page(name:"deviceSelectPage", title:"Paradox Device Select", content:"deviceSelectPage")
-     page(name:"statusCheckPage", content:"statusCheckPage")
+     page(name:"partitionSelectPage", title:"Paradox Partition Select", content:"partitionSelectPage")
      
-  /*
-  section("Notification events (optional):") {
-    input "notifyEvents", "enum", title: "Which Events?", description: "default (none)", required: false, multiple: false,
-     options:
-      ['all','alarm','closed','open','closed','partitionready',
-       'partitionnotready','partitionarmed','partitionalarm',
-       'partitionexitdelay','partitionentrydelay'
-      ]
-  }*/
+     page(name:"statusCheckPage", content:"statusCheckPage")
+     page(name:"resetParadoxServerSettingsPage", content:"resetParadoxServerSettingsPage")
+     page(name:"resetDeviceListPage", content:"resetDeviceListPage")
+
 }
 
 /************************************************************
@@ -56,6 +51,11 @@ mappings {
    path("/revoke") {
        action: [
            GET: "revokeHandler",
+       ]
+   }
+   path("/partition/:id/:status") {
+       action: [
+           PUT: "partitionHandler",
        ]
    }
 }
@@ -78,7 +78,8 @@ def updated() {
 def initialize() {
 	 DEBUG("Initialize")
      
-     subscribe(location, null, lanHandler, [filterEvents:false])    
+     subscribe(location, null, lanHandler, [filterEvents:false])   
+     subscribe(selectedPartitions, "setArmingMode", armingHandler, [filterEvents:false]) 
 }
 /************************************************************
 *	Pages
@@ -92,19 +93,13 @@ def mainPage()
                 }
                 
                 if (state.isLinked)
-                {
-                
+                {                
                 	UpdateSelectedDevices()
                  	
                 	section() {
-                		href ("deviceSelectPage", title: "Devices", description: "Select the devices you want to control.")                       
+                		href ("partitionSelectPage", title: "Partitions", description: "Select the Partitions you wish to control.")                       
+                        href ("deviceSelectPage", title: "Devices", description: "Select the devices you want to control.")
                     }
-                    
-                    section() {
-                    	paragraph ("Link established to your Paradox server")
-                        href ("statusCheckPage", title: "Status Check", description: "Check if your Paradox Controller is connected and running correctly.")
-                    }
-                    
                 }
                 else
                 {
@@ -125,16 +120,15 @@ def serverSettingsPage()
                 input("port", "string", title:"Port", description: "Port", defaultValue: 8876 , required: true)
                                 
                 if (state.isLinked)
-                {
-                	section(){                    	
-                    	href ("statusCheckPage", title: "Status Check", description: "Check if your Paradox Controller is connected and running correctly.")
-                    	href ("resetParadoxServerSettings", title: "Reset", description: "Reset your Paradox server settings and oAuth.")                        
-                        href ("resetDeviceList", title: "Reset Device List", description: "Refetch devices.")                        
-                    }
+                {                	          	
+                    href ("statusCheckPage", title: "Status Check", description: "Check if your Paradox Controller is connected and running correctly.")
+                    href ("resetParadoxServerSettingsPage", title: "Reset", description: "Reset your Paradox server settings and oAuth.")                        
+                    href ("resetDeviceListPage", title: "Reset Device List", description: "Refetch devices.")                        
+
                 }
                 else
                 {
-                	href ("paradoxServiceConnectPage", title:"Link", description:"Try to link to your local Paradox server.")
+                	href ("paradoxServiceConnectPage",name:"serviceConnect", title:"Link", description:"Try to link to your local Paradox server.")
                 }
                  
             }            
@@ -142,6 +136,32 @@ def serverSettingsPage()
         }
 }
 
+def partitionSelectPage()
+{
+	if (state.gotPartitions)
+    {  
+        def partitionOptions = partitionsDiscovered() ?: []
+        def numPartitions = partitionOptions.size() ?: 0
+
+		return dynamicPage(name:"partitionSelectPage", title:"Partition Selection", nextPage:"") {
+			section("Select your device below.") {
+            	input "selectedPartitions", "enum", required:false, title: "Select Partitions (${numPartitions} found)", multiple: true, options: partitionOptions
+			}		
+		}   
+    }
+    
+    if (!state.waitOnRestCall)
+    {
+		api("partitions",null)	
+    }
+    
+	return dynamicPage(name:"partitionSelectPage", title:"Partition Discovery Started!", nextPage:"", refreshInterval:3) {
+		section() {
+				paragraph "Getting partitions..."
+			}	
+	}   
+    
+}
 
 def deviceSelectPage()
 {
@@ -155,10 +175,10 @@ def deviceSelectPage()
         
         def smokeOptions = smokeDetectorDiscovered() ?: []
         def smokeFound = smokeOptions.size() ?: 0
-
-		return dynamicPage(name:"deviceSelectPage", title:"Device Selection", nextPage:"") {
+     
+     	return dynamicPage(name:"deviceSelectPage", title:"Device Selection", nextPage:"") {
 			section("Select your device below.") {
-				input "selectedOpenClose", "enum", required:false, title:"Select Open/Close Sensors (${numOcFound} found)", multiple:true, options:ocOptions
+        		input "selectedOpenClose", "enum", required:false, title:"Select Open/Close Sensors (${numOcFound} found)", multiple:true, options:ocOptions
 				input "selectedMotion", "enum", required:false, title:"Select Motion Sensors (${numMotionFound} found)", multiple:true, options:motionOptions
                 input "selectedSmoke", "enum", required:false, title:"Select Smoke Detectors (${smokeFound} found)", multiple:true, options:smokeOptions
 			}		
@@ -209,19 +229,26 @@ def paradoxServiceConnectPage()
     }
 }
 
-def resetDeviceList()
+def resetDeviceListPage ()
 {
-	state.gotDevices = false;
-     return dynamicPage(name:"resetDeviceList", title:"Reset Devices") {
+	state.gotDevices = false
+    state.gotPartitions = false
+    state.waitOnRestCall = false
+    state.motionSensors = null
+    state.partitions = null
+    state.openCloseDevices = null
+    state.smokeSensors = null
+    
+    return dynamicPage(name:"resetDeviceListPage", title:"Reset Devices") {
 			section() {
 				paragraph "Reset..."
 			}
 		}
 }
 
-def resetParadoxServerSettings()
+def resetParadoxServerSettingsPage()
 {
-	return dynamicPage(name:"resetParadoxServerSettings", title:"Reset All") {
+	return dynamicPage(name:"resetParadoxServerSettingsPage", title:"Reset All") {
 			section() {
 				paragraph "Not Implemented..."
 			}
@@ -286,6 +313,19 @@ def revokeHandler()
     return [result  : "ok"]
 }
 
+def partitionHandler()
+{
+	updatePartition()
+}
+
+/************************************************************
+*	ST subscription Handlers
+*/
+def armingHandler(evt)
+{
+	TRACE("got message from alarm panel device type")
+}
+
 def lanHandler(evt) {
 	def description = evt.description
     def hub = evt?.hubId
@@ -337,11 +377,26 @@ def lanHandler(evt) {
                 	if (d != null)
                     {
                     	DEBUG("Adding to device list")
-                    	d[it?.zoneId] = [zoneId: it.zoneId, name: it.name, partition: it.partition, deviceType: it.deviceType, hub: parsedEvent.hub]   
+                    	d[it?.zoneId] = [id: it.zoneId, name: it.name, partition: it.partition, deviceType: it.deviceType, hub: parsedEvent.hub]   
                     }
                 }
                 
                 state.gotDevices = true
+            }           
+            else if (body?.action?.equalsIgnoreCase("partitions"))
+            {           
+                body?.partitions.each { 
+                	
+                    def d = getPartitions()
+                                	
+                	if (d != null)
+                    {
+                    	DEBUG("Adding to partition list")
+                    	d[it?.item1] = [id: it.item1, name: it.item2, hub: parsedEvent.hub]   
+                    }
+                }
+                
+                state.gotPartitions = true
             }           
             
         }
@@ -419,7 +474,6 @@ private def getHostAddress() {
 private String convertIPtoHex(ipAddress) { 
     String hex = ipAddress.tokenize( '.' ).collect {  String.format( '%02x', it.toInteger() ) }.join()
     return hex
-
 }
 
 private String convertPortToHex(port) {
@@ -451,6 +505,9 @@ private def api(method, args) {
           		type: 'get'],
         'deviceList': 
 			[uri:"/devices", 
+          		type: 'get'],
+        'partitions': 
+			[uri:"/partitions", 
           		type: 'get'],
                
 		]
@@ -498,11 +555,11 @@ private putapi(params, uri) {
 *	Functions
 */
 
-def deleteChildren(selected, existing)
+def deleteChildren(selected, existing, dniPostfix)
 {
 	// given all known devices, search the list of selected ones, if the device isn't selected, see if it exists as a device, if it does, remove it.
     existing.each { device ->
-    	def dni = app.id + "/zone" + device.value.zoneId
+    	def dni = app.id + dniPostfix + device.value.id
         def sel
         
         if (selected)
@@ -524,21 +581,23 @@ def deleteChildren(selected, existing)
 
 def DeleteChildDevicesNotSelected()
 {
-	deleteChildren(selectedOpenClose, getOpenCloseDevices())
-    deleteChildren(selectedMotion, getMotionDevices())
-	deleteChildren(selectedSmoke, getSmokeDetectorDevices())
+	deleteChildren(selectedOpenClose, getOpenCloseDevices(), "/zone")
+    deleteChildren(selectedMotion, getMotionDevices(), "/zone")
+	deleteChildren(selectedSmoke, getSmokeDetectorDevices(), "/zone")
+    deleteChildren(selectedPartitions, getPartitions(), "/partition")
 }
 
 def UpdateSelectedDevices()
 {
 	DeleteChildDevicesNotSelected()    
     	
-    createNewDevices(selectedOpenClose, getOpenCloseDevices(), "Paradox Open/Close Sensor")
-    createNewDevices(selectedMotion, getMotionDevices(), "Paradox Motion Sensor")
-    createNewDevices(selectedSmoke, getSmokeDetectorDevices(), "Paradox Smoke Detector")    
+    createNewDevices(selectedOpenClose, getOpenCloseDevices(), "Paradox Open/Close Sensor", "/zone")
+    createNewDevices(selectedMotion, getMotionDevices(), "Paradox Motion Sensor", "/zone")
+    createNewDevices(selectedSmoke, getSmokeDetectorDevices(), "Paradox Smoke Detector", "/zone") 
+    createNewDevices(selectedPartitions, getPartitions(), "Paradox Alarm Panel", "/partition")
 }
 
-private def createNewDevices(selected, existing, deviceType)
+private def createNewDevices(selected, existing, deviceType, dniPostfix)
 {
 	if (selected)
     {    	
@@ -547,7 +606,7 @@ private def createNewDevices(selected, existing, deviceType)
             if (!d)
             {
             	def newDevice
-            	newDevice = existing.find { (app.id + "/zone" + it.value.zoneId) == dni}
+            	newDevice = existing.find { (app.id + dniPostfix + it.value.id) == dni}
                 d = addChildDevice("bitbounce",deviceType, dni, newDevice?.value.hub, [name: newDevice?.value.name])
                 DEBUG("Created new " + deviceType)
             }           
@@ -587,7 +646,7 @@ Map openCloseDiscovered() {
 	
     sensors.each {
         def value = "${it?.value?.name}"
-        def key = app.id +"/zone"+ it?.value?.zoneId
+        def key = app.id +"/zone"+ it?.value?.id
         map["${key}"] = value
     }
 	
@@ -600,7 +659,7 @@ Map motionDiscovered() {
 	
     motion.each {
         def value = "${it?.value?.name}"
-        def key = app.id +"/zone"+ it?.value?.zoneId 
+        def key = app.id +"/zone"+ it?.value?.id 
         map["${key}"] = value
     }
 
@@ -613,13 +672,29 @@ Map smokeDetectorDiscovered() {
 	
     smoke.each {
         def value = "${it?.value?.name}"
-        def key = app.id +"/zone"+ it?.value?.zoneId 
+        def key = app.id +"/zone"+ it?.value?.id 
         map["${key}"] = value
     }
 
 	map
 }
 
+Map partitionsDiscovered() {
+	def smoke =  getPartitions()
+	def map = [:]
+	
+    smoke.each {
+        def value = "${it?.value?.name}"
+        def key = app.id +"/partition"+ it?.value?.id 
+        map["${key}"] = value
+    }
+
+	map
+}
+
+def getPartitions() {
+	state.partitions = state.partitions ?: [:]
+}
 
 def getOpenCloseDevices() {
 	state.openCloseDevices = state.openCloseDevices ?: [:]
@@ -645,12 +720,18 @@ private updateZone()
     
     if (childDevices)
     {
-    	def child = childDevices.find { (app.id + "/zone" + zoneId) == it.deviceNetworkId}
+    	def child = childDevices.find { (app.id + "/zone" + id) == it.deviceNetworkId}
         if (child)
         {        	
         	child.zone("${zoneStatus}")
         }        
     }
+}
+
+private updatePartition()
+{
+	def partitionId = params.id
+    def partitionStatus = params.status
 }
 
 /************************* DEBUGGING **********************/

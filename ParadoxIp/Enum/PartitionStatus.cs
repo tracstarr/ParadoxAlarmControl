@@ -12,6 +12,7 @@ namespace ParadoxIp.Enum
         Ready,
         NotReady,
         Instant,
-        All = 99
+        All = 99,
+        Unknown = -1
     }
 }

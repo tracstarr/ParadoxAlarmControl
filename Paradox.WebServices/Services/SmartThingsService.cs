@@ -1,5 +1,5 @@
-﻿using Paradox.WebServices.Request;
-using Paradox.WebServices.Response;
+﻿using Paradox.WebServices.ServiceModel.Request;
+using Paradox.WebServices.ServiceModel.Response;
 using Paradox.WebServices.Settings;
 using ServiceStack;
 using SettingsProviderNet;
