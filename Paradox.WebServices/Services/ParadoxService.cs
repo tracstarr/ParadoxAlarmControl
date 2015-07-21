@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Paradox.WebServices.ServiceModel;
 using Paradox.WebServices.ServiceModel.Model;
 using Paradox.WebServices.ServiceModel.Request;
 using Paradox.WebServices.ServiceModel.Response;
@@ -76,10 +77,18 @@ namespace Paradox.WebServices.Services
 
             foreach (var partition in manager.Partitions)
             {
-                response.Partitions.Add(new Partition(){Id = (int)partition.Number, Name = partition.Name});
+                response.Partitions.Add(new Partition(){Id = (int)partition.Id, Name = partition.Name});
             }
 
             return response;
+        }
+
+        public bool Put(PartitionSetModeRequest request)
+        {
+            var partitionId = (PartitionNumber) request.PartitionId;
+            var mode = (AlarmMode) request.Mode;
+            manager.AlarmAction(partitionId, mode);
+            return true;
         }
 
         public bool Get(StartStatusCheckRequest request)
@@ -112,12 +121,7 @@ namespace Paradox.WebServices.Services
 
             return false;
         }
-
-        public object Put(SetStatusUpdateWebhookUrlRequest request)
-        {
-            return new NotImplementedException();
-        }
-
+        
         public string Get(ZoneStatusRequest request)
         {
             if (statusThread == null || !statusThread.IsAlive)
@@ -137,6 +141,37 @@ namespace Paradox.WebServices.Services
             }
 
             return DeviceStatus.Unknown.ToString();
+        }
+
+        public string Get(PartitionStatusRequest request)
+        {
+            if (statusThread == null || !statusThread.IsAlive)
+            {
+                manager.GetStatus();
+            }
+
+            var partition = manager.Partitions.SingleOrDefault(d => (int) d.Id == request.Id);
+            if (partition != null)
+            {
+                if (request.SendEvent)
+                {
+                    var cb = new SmartThingsCallbacks(settings);
+                    cb.PutPartitionUpdate(partition);
+                }
+                return partition.Status.ToString();
+            }
+
+            return PartitionStatus.Unknown.ToString();     
+        }
+
+        public string Get(StatusRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Get(RefreshPartitionRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

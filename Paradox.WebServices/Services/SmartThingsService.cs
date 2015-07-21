@@ -44,7 +44,7 @@ namespace Paradox.WebServices.Services
             return !cb.AuthorizationRevoke() ? new ResponseStatus("404", "Couldn't connect to ST hub") : new ResponseStatus();
         }
 
-        public StatusResponse Get(StatusRequest request)
+        public StatusResponse Get(SmartThingsStatusRequest request)
         {
             if (!string.IsNullOrEmpty(settings.AccessToken))
                 return new StatusResponse(){IsOk = true, Action = "status"};

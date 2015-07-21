@@ -7,6 +7,7 @@ using ParadoxIp.Managers;
 using ParadoxIp.Model;
 using ServiceStack;
 using ServiceStack.Api.Swagger;
+using ServiceStack.Logging;
 using ServiceStack.Text;
 using SettingsProviderNet;
 
@@ -18,6 +19,8 @@ namespace Paradox.WebServices
         private readonly IpModule module;
         private Thread notificationListenerThread;
         private Thread alarmStatusCheckThread;
+
+        private ILog logger = LogManager.GetLogger(typeof(ParadoxAppListenerHost));
 
         public ParadoxAppListenerHost(IpModule module)
             : base("Paradox HttpListener", typeof(ParadoxService).Assembly)
@@ -59,15 +62,37 @@ namespace Paradox.WebServices
            
             manager.DeviceStatusChanged += (sender, args) =>
             {
-                Console.WriteLine(args.Device.Name + ":" + args.Device.Status + "[" + args.Device.ZoneId + "]");
+                logger.DebugFormat("{0}:{1}[{2}]", args.Device.Name, args.Device.Status, args.Device.ZoneId);
                 var settings = container.Resolve<SmartThingsSettings>();
                 var cb = new SmartThingsCallbacks(settings);
                 cb.PutDeviceUpdate(args.Device);
             };
 
-            //note: should we hide these endpoints and always start automatically?
-            manager.Login();
-            manager.GetAlarmInformation();
+            manager.PartitionStatusChanged += (sender, args) =>
+            {
+                logger.DebugFormat("{0}:{1}", args.Partition.Name, args.Partition.Status);
+                var settings = container.Resolve<SmartThingsSettings>();
+                var cb = new SmartThingsCallbacks(settings);
+                cb.PutPartitionUpdate(args.Partition);
+            };
+
+            // try one attempt to logout/login if can't login initially
+            if (!manager.Login())
+            {
+                logger.Warn("Couldn't login. Attempting to logout then login to alarm module.");
+                manager.Logout();
+                manager.Login();
+            }
+
+            try
+            {
+                manager.GetAlarmInformation();
+            }
+            catch (Exception)
+            {
+                logger.Error("Problem logging in and getting alarm information. Services will start but Alarm host will not be connected.");
+            }
+             
             
             container.Register(manager);
 
@@ -78,6 +103,8 @@ namespace Paradox.WebServices
 
             alarmStatusCheckThread = new Thread(manager.StartStatusUpdates);
             container.Register(alarmStatusCheckThread);
+
+            alarmStatusCheckThread.Start();
          
         }
 

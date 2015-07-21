@@ -9,7 +9,6 @@ namespace ParadoxIp.Events
         public DeviceUpdateEventArgs(Device device)
         {
             Device = device;
-        
         }
     }
 }

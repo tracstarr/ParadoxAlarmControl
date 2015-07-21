@@ -78,8 +78,17 @@ def updated() {
 def initialize() {
 	 DEBUG("Initialize")
      
-     subscribe(location, null, lanHandler, [filterEvents:false])   
-     subscribe(selectedPartitions, "setArmingMode", armingHandler, [filterEvents:false]) 
+     subscribe(location, null, lanHandler, [filterEvents:false])        
+}
+
+def uninstalled() {
+    removeChildDevices(getChildDevices())
+}
+
+private removeChildDevices(delete) {
+    delete.each {
+        deleteChildDevice(it.deviceNetworkId)
+    }
 }
 /************************************************************
 *	Pages
@@ -321,10 +330,6 @@ def partitionHandler()
 /************************************************************
 *	ST subscription Handlers
 */
-def armingHandler(evt)
-{
-	TRACE("got message from alarm panel device type")
-}
 
 def lanHandler(evt) {
 	def description = evt.description
@@ -377,7 +382,7 @@ def lanHandler(evt) {
                 	if (d != null)
                     {
                     	DEBUG("Adding to device list")
-                    	d[it?.zoneId] = [id: it.zoneId, name: it.name, partition: it.partition, deviceType: it.deviceType, hub: parsedEvent.hub]   
+                    	d[it?.id] = [id: it.id, name: it.name, deviceType: it.deviceType, hub: parsedEvent.hub]   
                     }
                 }
                 
@@ -392,7 +397,7 @@ def lanHandler(evt) {
                 	if (d != null)
                     {
                     	DEBUG("Adding to partition list")
-                    	d[it?.item1] = [id: it.item1, name: it.item2, hub: parsedEvent.hub]   
+                    	d[it?.id] = [id: it.id, name: it.name, hub: parsedEvent.hub]   
                     }
                 }
                 
@@ -495,7 +500,7 @@ private def api(method, args) {
 		
     def methods = [
 		'status': 
-			[uri:"/status", 
+			[uri:"/smartthings/status", 
           		type: 'get'],
 		'configure': 
 			[uri:"/configure", 
@@ -509,7 +514,12 @@ private def api(method, args) {
         'partitions': 
 			[uri:"/partitions", 
           		type: 'get'],
-               
+        'set':
+        	[uri:"/setpartitionmode",
+            	type: 'put'],
+        'refreshPartition':
+        	[uri:"/refresh/partition?" + toQueryString(args),
+            	type: 'get']
 		]
         
 	def request = methods.getAt(method)
@@ -554,6 +564,19 @@ private putapi(params, uri) {
 /************************************************************
 *	Functions
 */
+def setArmingMode(partitionDevice, mode)
+{	
+	def pId = partitionDevice?.device?.deviceNetworkId[-1..-1]
+	def params = ["PartitionId": "${pId}","Mode" : "${mode}"]
+    api("set", params)    
+}
+
+def refreshPartition(partitionDevice)
+{	
+    def pId = partitionDevice?.device?.deviceNetworkId[-1..-1]
+	def params = ["PartitionId": "${pId}"]
+    api("refreshPartition", params)
+}
 
 def deleteChildren(selected, existing, dniPostfix)
 {
@@ -716,15 +739,11 @@ private updateZone()
 	def zoneId = params.id
     def zoneStatus = params.status
 
-	def childDevices = getAllChildDevices()
+	def childDevice = getChildDevice((app.id + "/zone" + id))
     
-    if (childDevices)
+    if (childDevice)
     {
-    	def child = childDevices.find { (app.id + "/zone" + id) == it.deviceNetworkId}
-        if (child)
-        {        	
-        	child.zone("${zoneStatus}")
-        }        
+    	childDevice.zone("${zoneStatus}")                
     }
 }
 
@@ -732,6 +751,13 @@ private updatePartition()
 {
 	def partitionId = params.id
     def partitionStatus = params.status
+    
+    def childDevice = getChildDevice((app.id + "/partition" + partitionId))
+    
+    if (childDevice)
+    {
+    	childDevice.setStatus("${partitionStatus}")                
+    }
 }
 
 /************************* DEBUGGING **********************/

@@ -53,5 +53,18 @@ namespace Paradox.WebServices.Services
             var response = client.Execute(request);
             return response.Content.Contains("ok");
         }
+
+        public bool PutPartitionUpdate(Partition partition)
+        {
+            if (partition.Status == PartitionStatus.Unknown)
+                return false;
+
+            string path = string.Format("{0}partition/{1}/{2}", rootPath, (int)partition.Id, (int)partition.Status);
+            var request = new RestRequest(path, Method.PUT) { RequestFormat = DataFormat.Json };
+            request.AddQueryParameter("access_token", settings.AccessToken);
+
+            var response = client.Execute(request);
+            return response.Content.Contains("ok");     
+        }
     }
 }

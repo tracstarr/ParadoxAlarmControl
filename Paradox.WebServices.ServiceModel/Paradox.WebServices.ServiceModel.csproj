@@ -56,11 +56,15 @@
     <Compile Include="Request\AlarmDeviceListRequest.cs" />
     <Compile Include="Request\AlarmInformationRequest.cs" />
     <Compile Include="Request\AlarmPartitionListRequest.cs" />
+    <Compile Include="ArmingMode.cs" />
     <Compile Include="Request\LoginToAlarmModuleRequest.cs" />
-    <Compile Include="Request\SetStatusUpdateWebhookUrlRequest.cs" />
+    <Compile Include="Request\PartitionSetModeRequest.cs" />
+    <Compile Include="Request\PartitionStatusRequest.cs" />
+    <Compile Include="Request\RefreshPartitionRequest.cs" />
     <Compile Include="Request\SmartThingsSettingsRequest.cs" />
     <Compile Include="Request\SmartThingsSettingsResetRequest.cs" />
     <Compile Include="Request\StartStatusCheckRequest.cs" />
+    <Compile Include="Request\SmartThingsStatusRequest.cs" />
     <Compile Include="Request\StatusRequest.cs" />
     <Compile Include="Request\StopStatusCheckRequest.cs" />
     <Compile Include="Request\ZoneStatusRequest.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="Response\AlarmInformationResponse.cs" />
     <Compile Include="Response\AlarmPartitionListResponse.cs" />
     <Compile Include="Response\ParadoxBaseResponse.cs" />
+    <Compile Include="Response\SmartThingsStatusResponse.cs" />
     <Compile Include="Response\StatusResponse.cs" />
   </ItemGroup>
   <ItemGroup>

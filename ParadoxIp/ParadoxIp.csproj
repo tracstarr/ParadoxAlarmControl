@@ -65,6 +65,7 @@
     <Compile Include="Enum\DeviceType.cs" />
     <Compile Include="Enum\IpModuleType.cs" />
     <Compile Include="Events\DeviceUpdateEventArgs.cs" />
+    <Compile Include="Events\PartitionUpdateEventArgs.cs" />
     <Compile Include="Model\Device.cs" />
     <Compile Include="Model\IpModule.cs" />
     <Compile Include="Managers\IpModuleManager.cs" />

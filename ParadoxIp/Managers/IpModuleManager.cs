@@ -30,6 +30,7 @@ namespace ParadoxIp.Managers
         private bool stopRunner;
         private bool haveAlarmInfo;
         private ReadOnlyCollection<DeviceStatus> previousDeviceStatus;
+        private ReadOnlyCollection<PartitionStatus> previousPartitionStatus;
 
         public IpModule Module { get; private set; }
         public List<Partition> Partitions { get; set; }
@@ -38,9 +39,10 @@ namespace ParadoxIp.Managers
         private string MainWindowHandle { get; set; }
         public ReadOnlyCollection<string> TroubleCodes { get; set; }
         public List<Device> Devices { get; set; }
-        
+
         public event EventHandler<AlarmStatusEventArgs> AlarmStatusUpdate;
         public event EventHandler<DeviceUpdateEventArgs> DeviceStatusChanged;
+        public event EventHandler<PartitionUpdateEventArgs> PartitionStatusChanged;
 
         public IpModuleManager(IpModule module)
         {
@@ -152,16 +154,18 @@ namespace ParadoxIp.Managers
 
                 var zoneStatus = (new List<object>(js.ExecuteScript("return tbl_statuszone") as IEnumerable<object>)).ToList();
                 var alarms = (new List<object>(js.ExecuteScript("return tbl_alarmes") as IEnumerable<object>));
-                var userAccess = (new List<object>(js.ExecuteScript("return tbl_useraccess") as IEnumerable<object>));
+                var partitionStatus = (new List<object>(js.ExecuteScript("return tbl_useraccess") as IEnumerable<object>));
                 var troubles = (new List<object>(js.ExecuteScript("return tbl_troubles") as IEnumerable<object>));
                 var stayd = js.ExecuteScript("return stayd").ToString();
                 var option = js.ExecuteScript("return option").ToString();
 
                 List<DeviceStatus> ds = zoneStatus.Take(Devices.Count).Select(zoneStatu => (DeviceStatus)Convert.ToInt32(zoneStatu.ToString())).ToList();
+                List<PartitionStatus> ps = partitionStatus.Take(Partitions.Count).Select(p => (PartitionStatus)Convert.ToInt32(p.ToString())).ToList();
 
-                OnAlarmStatusUpdate(new AlarmStatusEventArgs(ds, alarms, userAccess, troubles, stayd, option, previousDeviceStatus));
+                OnAlarmStatusUpdate(new AlarmStatusEventArgs(ds, alarms, ps, troubles, stayd, option, previousDeviceStatus, previousPartitionStatus));
 
                 previousDeviceStatus = new ReadOnlyCollection<DeviceStatus>(ds);
+                previousPartitionStatus = new ReadOnlyCollection<PartitionStatus>(ps);
             }
         }
         public void AlarmAction(PartitionNumber partitionNumber, AlarmMode mode)
@@ -207,7 +211,7 @@ namespace ParadoxIp.Managers
         {
             if (haveAlarmInfo)
                 return;
-            
+
             lock (lockObject)
             {
                 if (!IsLoggedIn)
@@ -226,9 +230,8 @@ namespace ParadoxIp.Managers
                 haveAlarmInfo = true;
 
                 // setup first time previous status
-                var defaultPrevious = new List<DeviceStatus>();
-                defaultPrevious.AddRange(Devices.Select(device => device.PreviousStatus));
-                previousDeviceStatus = new ReadOnlyCollection<DeviceStatus>(defaultPrevious);
+                previousDeviceStatus = new ReadOnlyCollection<DeviceStatus>(Devices.Select(device => device.PreviousStatus).ToList());
+                previousPartitionStatus = new ReadOnlyCollection<PartitionStatus>(Partitions.Select(p => p.PreviousStatus).ToList());
             }
         }
         private void ProcessAreaAndZoneInformation(List<string> areas, List<object> zones)
@@ -236,7 +239,7 @@ namespace ParadoxIp.Managers
 
             int usedAreas = 0;
             int zoneNum = 1;
-            
+
             for (int i = 0; i < zones.Count(); i++)
             {
                 var partition = Convert.ToInt32(zones[i]);
@@ -268,7 +271,7 @@ namespace ParadoxIp.Managers
                 var p = new Partition()
                 {
                     Name = areas[i],
-                    Number = (PartitionNumber) i,
+                    Id = (PartitionNumber)i,
                     PreviousStatus = PartitionStatus.Unknown,
                     Status = PartitionStatus.Unknown
                 };
@@ -295,7 +298,7 @@ namespace ParadoxIp.Managers
 
             if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(name, "heat", CompareOptions.IgnoreCase) >= 0)
                 return DeviceType.HeatDetector;
-            
+
             return DeviceType.Unknown;
         }
         public void GetVersionInformation()
@@ -451,6 +454,19 @@ namespace ParadoxIp.Managers
         private void OnAlarmStatusUpdate(AlarmStatusEventArgs e)
         {
             int i = 0;
+
+            foreach (var partitionStatus in e.PartitionStatus)
+            {
+                if (previousPartitionStatus[i] != partitionStatus)
+                {
+                    Partitions[i].PreviousStatus = previousPartitionStatus[i];
+                    Partitions[i].Status = partitionStatus;
+                    OnPartitionStatusChanged(new PartitionUpdateEventArgs(Partitions[i]));
+                }
+                i++;
+            }
+
+            i = 0;
             foreach (var deviceStatuse in e.DeviceStatus)
             {
                 if (previousDeviceStatus[i] != deviceStatuse)
@@ -469,6 +485,12 @@ namespace ParadoxIp.Managers
         private void OnDeviceUpdate(DeviceUpdateEventArgs e)
         {
             var handler = DeviceStatusChanged;
+            if (handler != null) handler(this, e);
+        }
+
+        private void OnPartitionStatusChanged(PartitionUpdateEventArgs e)
+        {
+            var handler = PartitionStatusChanged;
             if (handler != null) handler(this, e);
         }
     }
