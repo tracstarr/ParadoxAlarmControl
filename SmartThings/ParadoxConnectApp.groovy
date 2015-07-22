@@ -354,6 +354,13 @@ def lanHandler(evt) {
     try
     {
     	def headerString = new String(parsedEvent.headers.decodeBase64())
+        
+        if (!headerString.contains("Paradox HttpListener"))
+        {
+            WARN("Not a message from Paradox Services")
+            return
+        }
+
 		def bodyString = new String(parsedEvent.body.decodeBase64())
         
         def body = new groovy.json.JsonSlurper().parseText(bodyString)
