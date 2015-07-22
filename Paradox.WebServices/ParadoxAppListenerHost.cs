@@ -55,7 +55,14 @@ namespace Paradox.WebServices
 
         public override void Configure(Container container)
         {
-         
+
+            this.GlobalResponseFilters.Add((req, res, dto) =>
+            {
+
+                res.AddHeader("X-SmartThings", ServiceName);
+
+            });
+
             JsConfig.EmitCamelCaseNames = true;
             Plugins.Add(new SwaggerFeature());
             var manager = new IpModuleManager(module);
