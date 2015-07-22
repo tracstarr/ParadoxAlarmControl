@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Paradox.WebServices.ServiceModel;
 using Paradox.WebServices.ServiceModel.Model;
 using Paradox.WebServices.ServiceModel.Request;
 using Paradox.WebServices.ServiceModel.Response;
@@ -10,6 +9,7 @@ using Paradox.WebServices.Settings;
 using ParadoxIp.Enum;
 using ParadoxIp.Managers;
 using ServiceStack;
+using ServiceStack.Logging;
 
 namespace Paradox.WebServices.Services
 {
@@ -18,6 +18,7 @@ namespace Paradox.WebServices.Services
         private readonly IpModuleManager manager;
         private Thread statusThread;
         private readonly SmartThingsSettings settings;
+        private readonly ILog logger = LogManager.GetLogger(typeof(ParadoxService));
 
         public ParadoxService(IpModuleManager manager, Thread statusThread, SmartThingsSettings settings)
         {
@@ -59,12 +60,12 @@ namespace Paradox.WebServices.Services
 
         public AlarmDeviceListResponse Get(AlarmDeviceListRequest request)
         {
-            var response = new AlarmDeviceListResponse() {Action = "devices", Devices = new List<Device>()};
+            var response = new AlarmDeviceListResponse() { Action = "devices", Devices = new List<Device>() };
             manager.GetAlarmInformation();
 
             foreach (var device in manager.Devices)
             {
-                response.Devices.Add(new Device(){Id = device.ZoneId, Name = device.Name, DeviceType = device.DeviceType.ToString()});
+                response.Devices.Add(new Device() { Id = device.ZoneId, Name = device.Name, DeviceType = device.DeviceType.ToString() });
             }
 
             return response;
@@ -72,12 +73,12 @@ namespace Paradox.WebServices.Services
 
         public AlarmPartitionListResponse Get(AlarmPartitionListRequest request)
         {
-            var response = new AlarmPartitionListResponse() {Action = "partitions", Partitions = new List<Partition>()};
+            var response = new AlarmPartitionListResponse() { Action = "partitions", Partitions = new List<Partition>() };
             manager.GetAlarmInformation();
 
             foreach (var partition in manager.Partitions)
             {
-                response.Partitions.Add(new Partition(){Id = (int)partition.Id, Name = partition.Name});
+                response.Partitions.Add(new Partition() { Id = (int)partition.Id, Name = partition.Name });
             }
 
             return response;
@@ -85,8 +86,8 @@ namespace Paradox.WebServices.Services
 
         public bool Put(PartitionSetModeRequest request)
         {
-            var partitionId = (PartitionNumber) request.PartitionId;
-            var mode = (AlarmMode) request.Mode;
+            var partitionId = (PartitionNumber)request.PartitionId;
+            var mode = (AlarmMode)request.Mode;
             manager.AlarmAction(partitionId, mode);
             return true;
         }
@@ -121,7 +122,7 @@ namespace Paradox.WebServices.Services
 
             return false;
         }
-        
+
         public string Get(ZoneStatusRequest request)
         {
             if (statusThread == null || !statusThread.IsAlive)
@@ -150,7 +151,7 @@ namespace Paradox.WebServices.Services
                 manager.GetStatus();
             }
 
-            var partition = manager.Partitions.SingleOrDefault(d => (int) d.Id == request.Id);
+            var partition = manager.Partitions.SingleOrDefault(d => (int)d.Id == request.Id);
             if (partition != null)
             {
                 if (request.SendEvent)
@@ -161,7 +162,7 @@ namespace Paradox.WebServices.Services
                 return partition.Status.ToString();
             }
 
-            return PartitionStatus.Unknown.ToString();     
+            return PartitionStatus.Unknown.ToString();
         }
 
         public string Get(StatusRequest request)
@@ -172,6 +173,36 @@ namespace Paradox.WebServices.Services
         public string Get(RefreshPartitionRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Get(ForceFullStatusUpdateRequest request)
+        {
+            try
+            {
+                if (statusThread == null || !statusThread.IsAlive)
+                {
+                    manager.GetStatus();
+                }
+
+                var cb = new SmartThingsCallbacks(settings);
+
+                foreach (var partition in manager.Partitions)
+                {
+                    cb.PutPartitionUpdate(partition);
+                }
+
+                foreach (var device in manager.Devices)
+                {
+                    cb.PutDeviceUpdate(device);
+                }
+            }
+            catch (Exception exception)
+            {
+                logger.Error(exception);
+                return false;
+            }
+
+            return true;
         }
     }
 }

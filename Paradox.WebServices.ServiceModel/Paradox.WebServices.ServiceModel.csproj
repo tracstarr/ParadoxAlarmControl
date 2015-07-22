@@ -57,6 +57,7 @@
     <Compile Include="Request\AlarmInformationRequest.cs" />
     <Compile Include="Request\AlarmPartitionListRequest.cs" />
     <Compile Include="ArmingMode.cs" />
+    <Compile Include="Request\ForceFullStatusUpdateRequest.cs" />
     <Compile Include="Request\LoginToAlarmModuleRequest.cs" />
     <Compile Include="Request\PartitionSetModeRequest.cs" />
     <Compile Include="Request\PartitionStatusRequest.cs" />

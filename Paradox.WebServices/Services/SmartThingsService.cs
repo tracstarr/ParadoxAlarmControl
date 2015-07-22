@@ -52,5 +52,6 @@ namespace Paradox.WebServices.Services
             return new StatusResponse(){Action = "status", IsOk = false};
             
         }
+      
     }
 }

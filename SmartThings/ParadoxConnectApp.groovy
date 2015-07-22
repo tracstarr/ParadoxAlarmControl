@@ -31,7 +31,7 @@ preferences {
      page(name:"statusCheckPage", content:"statusCheckPage")
      page(name:"resetParadoxServerSettingsPage", content:"resetParadoxServerSettingsPage")
      page(name:"resetDeviceListPage", content:"resetDeviceListPage")
-
+     page(name:"forceRefreshPage", content:"forceRefreshPage")
 }
 
 /************************************************************
@@ -133,7 +133,7 @@ def serverSettingsPage()
                     href ("statusCheckPage", title: "Status Check", description: "Check if your Paradox Controller is connected and running correctly.")
                     href ("resetParadoxServerSettingsPage", title: "Reset", description: "Reset your Paradox server settings and oAuth.")                        
                     href ("resetDeviceListPage", title: "Reset Device List", description: "Refetch devices.")                        
-
+                    href ("forceRefreshPage", title: "Refresh all device statuses", description: "Refresh the status of all devices.")        
                 }
                 else
                 {
@@ -251,6 +251,16 @@ def resetDeviceListPage ()
     return dynamicPage(name:"resetDeviceListPage", title:"Reset Devices") {
 			section() {
 				paragraph "Reset..."
+			}
+		}
+}
+
+def forceRefreshPage()
+{
+	api("fullrefresh",null)
+	return dynamicPage(name:"forceRefreshPage", title:"Force Refresh") {
+			section() {
+				paragraph "Done"
 			}
 		}
 }
@@ -519,7 +529,10 @@ private def api(method, args) {
             	type: 'put'],
         'refreshPartition':
         	[uri:"/refresh/partition?" + toQueryString(args),
-            	type: 'get']
+            	type: 'get'],
+        'fullrefresh':
+        	[uri:"/forcestatusrefresh",
+            	type: 'get'],
 		]
         
 	def request = methods.getAt(method)

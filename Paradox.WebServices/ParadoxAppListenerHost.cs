@@ -20,7 +20,7 @@ namespace Paradox.WebServices
         private Thread notificationListenerThread;
         private Thread alarmStatusCheckThread;
 
-        private ILog logger = LogManager.GetLogger(typeof(ParadoxAppListenerHost));
+        private readonly ILog logger = LogManager.GetLogger(typeof(ParadoxAppListenerHost));
 
         public ParadoxAppListenerHost(IpModule module)
             : base("Paradox HttpListener", typeof(ParadoxService).Assembly)
