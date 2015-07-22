@@ -82,6 +82,7 @@ def initialize() {
 }
 
 def uninstalled() {
+	api("reset",null)
     removeChildDevices(getChildDevices())
 }
 
@@ -752,12 +753,13 @@ private updateZone()
 	def zoneId = params.id
     def zoneStatus = params.status
 
-	def childDevice = getChildDevice((app.id + "/zone" + id))
+	def childDevice = getChildDevice((app.id + "/zone" + zoneId))
     
     if (childDevice)
     {
     	childDevice.zone("${zoneStatus}")                
     }
+    
 }
 
 private updatePartition()
