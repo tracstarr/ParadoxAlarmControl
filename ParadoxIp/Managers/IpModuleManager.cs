@@ -284,7 +284,7 @@ namespace ParadoxIp.Managers
             if (string.IsNullOrEmpty(name))
                 return DeviceType.Unknown;
 
-            if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(name, "door", CompareOptions.IgnoreCase) >= 0)
+            if ((CultureInfo.CurrentCulture.CompareInfo.IndexOf(name, "door", CompareOptions.IgnoreCase) >= 0) || (CultureInfo.CurrentCulture.CompareInfo.IndexOf(name, "window", CompareOptions.IgnoreCase) >= 0))
                 return DeviceType.OpenCloseSensor;
 
             if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(name, "glass", CompareOptions.IgnoreCase) >= 0)
