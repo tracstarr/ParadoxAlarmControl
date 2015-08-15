@@ -26,6 +26,9 @@ namespace ParadoxIp.Managers
 
         public static void RequestStop()
         {
+            if (listener == null)
+                return;
+
             stopRunner = true;
             listener.Stop();
         }

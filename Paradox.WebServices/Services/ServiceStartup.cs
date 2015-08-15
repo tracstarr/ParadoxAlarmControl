@@ -4,6 +4,7 @@ using System.Security.Policy;
 using ParadoxIp.Model;
 using ServiceStack;
 using ServiceStack.Logging;
+using ServiceStack.Logging.NLogger;
 
 namespace Paradox.WebServices.Services
 {
@@ -21,7 +22,7 @@ namespace Paradox.WebServices.Services
 
         public static void Run()
         {
-            LogManager.LogFactory = new ConsoleLogFactory();
+            LogManager.LogFactory = new NLogFactory();
             var logger = LogManager.GetLogger(typeof(ServiceStartup));
 
             try
@@ -51,7 +52,7 @@ namespace Paradox.WebServices.Services
 
         public static AppHostHttpListenerBase GetAppHostListner()
         {
-           // LogManager.LogFactory = new ConsoleLogFactory();
+            LogManager.LogFactory = new NLogFactory();
             var module = new IpModule(new Url(ConfigurationManager.AppSettings["moduleIp"]), Convert.ToInt32(ConfigurationManager.AppSettings["panelCode"]), ConfigurationManager.AppSettings["password"]);
             return new ParadoxAppListenerHost(module);
         }

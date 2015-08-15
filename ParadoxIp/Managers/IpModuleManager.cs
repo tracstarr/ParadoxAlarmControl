@@ -46,12 +46,20 @@ namespace ParadoxIp.Managers
 
         public IpModuleManager(IpModule module)
         {
+            string[] phantomArgs = new string[] { "--webdriver-loglevel=NONE" };
+            
+            PhantomJSOptions options = new PhantomJSOptions();
+            options.AddAdditionalCapability("phantomjs.cli.args", phantomArgs);
+
             Module = module;
             var driverService = PhantomJSDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
-            driver = new PhantomJSDriver(driverService);
+            driverService.LogFile = "phantomJSService.log";
+            
+            driver = new PhantomJSDriver(driverService, options );
             driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-
+                  
+            
             loginUrl = string.Format("{0}/login_page.html", Module.Url.Value.ToString());
             logoutUrl = string.Format("{0}/logout.html", Module.Url.Value.ToString());
             versionUrl = string.Format("{0}/version.html", Module.Url.Value.ToString());
@@ -146,7 +154,7 @@ namespace ParadoxIp.Managers
 
                     js.ExecuteScript("window.open('" + statusLiveUrl + "','status')");
                 }
-
+                
                 driver.SwitchTo().Window("status");
                 driver.Navigate().Refresh();
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));

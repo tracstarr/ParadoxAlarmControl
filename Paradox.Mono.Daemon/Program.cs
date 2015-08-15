@@ -26,6 +26,8 @@ namespace Paradox.Mono.Daemon
                     if (signals[id].IsSet) exit = true;
                 }
             }
+
+            ServiceStartup.Stop();
         }
 
     }

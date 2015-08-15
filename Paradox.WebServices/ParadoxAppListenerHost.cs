@@ -10,6 +10,7 @@ using ServiceStack.Api.Swagger;
 using ServiceStack.Logging;
 using ServiceStack.Text;
 using SettingsProviderNet;
+using System.Configuration;
 
 namespace Paradox.WebServices
 {
@@ -45,7 +46,7 @@ namespace Paradox.WebServices
             }
 
             ParadoxNotificationListener.RequestStop();
-            if (notificationListenerThread.IsAlive)
+            if (notificationListenerThread != null && notificationListenerThread.IsAlive)
             {
                 notificationListenerThread.Join();
             }
@@ -103,7 +104,7 @@ namespace Paradox.WebServices
             
             container.Register(manager);
 
-            var settingsProvider = new SettingsProvider(new RoamingAppDataStorage("Paradox"));
+            var settingsProvider = new SettingsProviderNet.SettingsProvider(new RoamingAppDataStorage("Paradox"));
             var mySettings = settingsProvider.GetSettings<SmartThingsSettings>();
 
             container.Register(mySettings);
@@ -123,8 +124,12 @@ namespace Paradox.WebServices
 
         private void StartNotificationListener()
         {
-            notificationListenerThread = new Thread(ParadoxNotificationListener.Main);
-            notificationListenerThread.Start();
+            //bool start = Convert.ToBoolean(ConfigurationManager.AppSettings["runMailServer"]);
+            //if (!start)
+            //    return;
+
+            //notificationListenerThread = new Thread(ParadoxNotificationListener.Main);
+            //notificationListenerThread.Start();
         }
     }
 }
