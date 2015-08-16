@@ -99,7 +99,13 @@
     <EmbeddedResource Include="Html\version.js" />
     <EmbeddedResource Include="Html\Default_loading.html" />
     <EmbeddedResource Include="Html\webstyles.css" />
-    <Content Include="phantomjs.exe">
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\packages\PhantomJS.2.0.0\tools\phantomjs\phantomjs.exe">
+      <Link>phantomjs.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParadoxIp", "ParadoxIp\ParadoxIp.csproj", "{C3C19BED-60F3-4635-88CA-B3FE1DFA60C0}"
 EndProject
@@ -10,13 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WinService", "Paradox.WinService\Paradox.WinService.csproj", "{F74486FD-84A8-46C4-ADF8-7402CE06235F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmartThings", "SmartThings", "{FF3D87C7-E3DA-4C9B-8277-73405627A5A8}"
-	ProjectSection(SolutionItems) = preProject
-		SmartThings\ParadoxAlarmPanelDeviceType.groovy = SmartThings\ParadoxAlarmPanelDeviceType.groovy
-		SmartThings\ParadoxConnectApp.groovy = SmartThings\ParadoxConnectApp.groovy
-		SmartThings\ParadoxMotionSensorDeviceType.groovy = SmartThings\ParadoxMotionSensorDeviceType.groovy
-		SmartThings\ParadoxOpenCloseSensorDeviceType.groovy = SmartThings\ParadoxOpenCloseSensorDeviceType.groovy
-		SmartThings\ParadoxSmokeDetectorDeviceType.groovy = SmartThings\ParadoxSmokeDetectorDeviceType.groovy
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C952F995-ACCD-4E15-8226-DBC0DD609E80}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,6 +28,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{257B0F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.ServiceModel", "Paradox.WebServices.ServiceModel\Paradox.WebServices.ServiceModel.csproj", "{75533B60-3776-48B5-A902-59CD90A10330}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devicetypes", "devicetypes", "{6EAB5E6C-EF30-4431-B73C-7CD8435F6BEE}"
+	ProjectSection(SolutionItems) = preProject
+		devicetypes\tracstarr\paradox-alarm-panel.src\paradox-alarm-panel.groovy = devicetypes\tracstarr\paradox-alarm-panel.src\paradox-alarm-panel.groovy
+		devicetypes\tracstarr\paradox-motion-sensor.src\paradox-motion-sensor.groovy = devicetypes\tracstarr\paradox-motion-sensor.src\paradox-motion-sensor.groovy
+		devicetypes\tracstarr\paradox-open\close-sensor.src\paradox-open-close-sensor.groovy = devicetypes\tracstarr\paradox-open\close-sensor.src\paradox-open-close-sensor.groovy
+		devicetypes\tracstarr\paradox-smoke-detector.src\paradox-smoke-detector.groovy = devicetypes\tracstarr\paradox-smoke-detector.src\paradox-smoke-detector.groovy
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "smartapps", "smartapps", "{2B132925-C27F-42C6-A97A-D0F31DEFD790}"
+	ProjectSection(SolutionItems) = preProject
+		smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy = smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,5 +75,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6EAB5E6C-EF30-4431-B73C-7CD8435F6BEE} = {FF3D87C7-E3DA-4C9B-8277-73405627A5A8}
+		{2B132925-C27F-42C6-A97A-D0F31DEFD790} = {FF3D87C7-E3DA-4C9B-8277-73405627A5A8}
 	EndGlobalSection
 EndGlobal
