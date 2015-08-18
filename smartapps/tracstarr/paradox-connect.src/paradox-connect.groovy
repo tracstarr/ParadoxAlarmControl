@@ -521,25 +521,25 @@ private def api(method, args) {
 			[uri:"/smartthings/status", 
           		type: 'get'],
 		'configure': 
-			[uri:"/configure", 
+			[uri:"/smartthings/configure", 
           		type: 'put'],
 		'reset': 
-			[uri:"/configure/reset", 
+			[uri:"/smartthings/configure/reset", 
           		type: 'get'],
         'deviceList': 
-			[uri:"/devices", 
+			[uri:"/paradox/devices", 
           		type: 'get'],
         'partitions': 
-			[uri:"/partitions", 
+			[uri:"/paradox/partitions", 
           		type: 'get'],
         'set':
-        	[uri:"/setpartitionmode",
+        	[uri:"/paradox/setpartitionmode",
             	type: 'put'],
         'refreshPartition':
-        	[uri:"/refresh/partition?" + toQueryString(args),
+        	[uri:"/paradox/refresh/partition?" + toQueryString(args),
             	type: 'get'],
         'fullrefresh':
-        	[uri:"/forcestatusrefresh",
+        	[uri:"/paradox/forcestatusrefresh",
             	type: 'get'],
 		]
         
