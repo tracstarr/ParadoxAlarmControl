@@ -97,6 +97,10 @@
     <EmbeddedResource Include="WinServiceInstaller.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Paradox.WebServices.SmartThings\Paradox.WebServices.SmartThings.csproj">
+      <Project>{197c206d-6030-4c05-86e1-2291bf6c4a44}</Project>
+      <Name>Paradox.WebServices.SmartThings</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Paradox.WebServices\Paradox.WebServices.csproj">
       <Project>{c1bfbe4b-2125-49d4-84b7-e6cbec92ca42}</Project>
       <Name>Paradox.WebServices</Name>
@@ -114,6 +118,9 @@
     <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,4 +1,5 @@
 ﻿using Paradox.WebServices.SmartThings.Settings;
+using ParadoxIp;
 using ParadoxIp.Managers;
 using ServiceStack;
 using ServiceStack.Logging;
@@ -32,6 +33,7 @@ namespace Paradox.WebServices.SmartThings
             var mySettings = settingsProvider.GetSettings<SmartThingsSettings>();
             var container = appHost.GetContainer();
             container.Register(mySettings);
+            container.RegisterAs<SmartThingsCallbacks, IParadoxEventCallbacks>();
         }
 
         public void AfterPluginsLoaded(IAppHost appHost)
