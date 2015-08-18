@@ -1,10 +1,10 @@
-﻿using Paradox.WebServices.ServiceModel.Request;
-using Paradox.WebServices.ServiceModel.Response;
-using Paradox.WebServices.Settings;
+﻿using Paradox.WebServices.ServiceModel.SmartThings.Request;
+using Paradox.WebServices.ServiceModel.SmartThings.Response;
+using Paradox.WebServices.SmartThings.Settings;
 using ServiceStack;
 using SettingsProviderNet;
 
-namespace Paradox.WebServices.Services
+namespace Paradox.WebServices.SmartThings
 {
     public class SmartThingsService : IService
     {

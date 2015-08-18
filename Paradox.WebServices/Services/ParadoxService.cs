@@ -5,7 +5,7 @@ using System.Threading;
 using Paradox.WebServices.ServiceModel.Model;
 using Paradox.WebServices.ServiceModel.Request;
 using Paradox.WebServices.ServiceModel.Response;
-using Paradox.WebServices.Settings;
+using ParadoxIp;
 using ParadoxIp.Enum;
 using ParadoxIp.Managers;
 using ServiceStack;
@@ -16,23 +16,16 @@ namespace Paradox.WebServices.Services
     public class ParadoxService : Service
     {
         private readonly IpModuleManager manager;
-        private Thread statusThread;
-        private readonly SmartThingsSettings settings;
+        private readonly Thread statusThread;
+        private readonly IParadoxEventCallbacks callbacks;
+
         private readonly ILog logger = LogManager.GetLogger(typeof(ParadoxService));
 
-        public ParadoxService(IpModuleManager manager, Thread statusThread, SmartThingsSettings settings)
+        public ParadoxService(IpModuleManager manager, Thread statusThread, IParadoxEventCallbacks callbacks)
         {
             this.manager = manager;
             this.statusThread = statusThread;
-            this.settings = settings;
-        }
-
-        public object Get(LoginToAlarmModuleRequest request)
-        {
-            if (manager.IsLoggedIn)
-                return true;
-
-            return manager.Login();
+            this.callbacks = callbacks;
         }
 
         public AlarmInformationResponse Get(AlarmInformationRequest request)
@@ -92,37 +85,6 @@ namespace Paradox.WebServices.Services
             return true;
         }
 
-        public bool Get(StartStatusCheckRequest request)
-        {
-            if (statusThread != null && !statusThread.IsAlive)
-            {
-                if (statusThread.ThreadState == ThreadState.Unstarted)
-                {
-                    statusThread.Start();
-                }
-                else
-                {
-                    //bug: not working right (no events?)
-                    statusThread = new Thread(manager.StartStatusUpdates);
-                    statusThread.Start();
-                }
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool Get(StopStatusCheckRequest request)
-        {
-            if (statusThread != null && statusThread.IsAlive)
-            {
-                manager.StopStatusUpdates();
-                return true;
-            }
-
-            return false;
-        }
-
         public string Get(ZoneStatusRequest request)
         {
             if (statusThread == null || !statusThread.IsAlive)
@@ -135,8 +97,7 @@ namespace Paradox.WebServices.Services
             {
                 if (request.SendEvent)
                 {
-                    var cb = new SmartThingsCallbacks(settings);
-                    cb.PutDeviceUpdate(device);
+                    callbacks?.PutDeviceUpdate(device);
                 }
                 return device.Status.ToString();
             }
@@ -156,23 +117,12 @@ namespace Paradox.WebServices.Services
             {
                 if (request.SendEvent)
                 {
-                    var cb = new SmartThingsCallbacks(settings);
-                    cb.PutPartitionUpdate(partition);
+                    callbacks?.PutPartitionUpdate(partition);
                 }
                 return partition.Status.ToString();
             }
 
             return PartitionStatus.Unknown.ToString();
-        }
-
-        public string Get(StatusRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Get(RefreshPartitionRequest request)
-        {
-            throw new NotImplementedException();
         }
 
         public bool Get(ForceFullStatusUpdateRequest request)
@@ -184,16 +134,14 @@ namespace Paradox.WebServices.Services
                     manager.GetStatus();
                 }
 
-                var cb = new SmartThingsCallbacks(settings);
-
                 foreach (var partition in manager.Partitions)
                 {
-                    cb.PutPartitionUpdate(partition);
+                    callbacks?.PutPartitionUpdate(partition);
                 }
 
                 foreach (var device in manager.Devices)
                 {
-                    cb.PutDeviceUpdate(device);
+                    callbacks?.PutDeviceUpdate(device);
                 }
             }
             catch (Exception exception)

@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "smartapps", "smartapps", "{
 		smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy = smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.SmartThings", "Paradox.WebServices.SmartThings\Paradox.WebServices.SmartThings.csproj", "{197C206D-6030-4C05-86E1-2291BF6C4A44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.ServiceModel.SmartThings", "Paradox.WebServices.ServiceModel.SmartThings\Paradox.WebServices.ServiceModel.SmartThings.csproj", "{7C121D22-DF97-4030-93E3-B15163FA14A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +76,14 @@ Global
 		{75533B60-3776-48B5-A902-59CD90A10330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75533B60-3776-48B5-A902-59CD90A10330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75533B60-3776-48B5-A902-59CD90A10330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

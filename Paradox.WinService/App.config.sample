@@ -8,6 +8,8 @@
     <add key="moduleIp" value="http://192.168.1.199"/>
     <add key="panelCode" value=""/>
     <add key="password" value=""/>
+    <add key="runMailServer" value="false"/>
+    <add key="enableSmartThings" value="true"/>
     <add key="servicestack:license" value=""/>
 
   </appSettings>

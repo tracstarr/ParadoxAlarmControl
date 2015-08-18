@@ -1,16 +1,15 @@
 using System;
+using System.Configuration;
 using System.Threading;
 using Funq;
 using Paradox.WebServices.Services;
-using Paradox.WebServices.Settings;
+using Paradox.WebServices.SmartThings;
 using ParadoxIp.Managers;
 using ParadoxIp.Model;
 using ServiceStack;
 using ServiceStack.Api.Swagger;
 using ServiceStack.Logging;
 using ServiceStack.Text;
-using SettingsProviderNet;
-using System.Configuration;
 
 namespace Paradox.WebServices
 {
@@ -27,11 +26,11 @@ namespace Paradox.WebServices
             : base("Paradox HttpListener", typeof(ParadoxService).Assembly)
         {
             this.module = module;
-            
         }
 
         public override void Stop()
         {
+            logger.Info("Stopping Paradox Web Services");
             var manager = Container.Resolve<IpModuleManager>();
 
             if (manager != null)
@@ -50,39 +49,27 @@ namespace Paradox.WebServices
             {
                 notificationListenerThread.Join();
             }
-            
+
             base.Stop();
         }
 
         public override void Configure(Container container)
         {
-
-            this.GlobalResponseFilters.Add((req, res, dto) =>
+            GlobalResponseFilters.Add((req, res, dto) =>
             {
-
-                res.AddHeader("X-SmartThings", ServiceName);
-
+                res.AddHeader("X-Paradox", ServiceName);
             });
 
             JsConfig.EmitCamelCaseNames = true;
             Plugins.Add(new SwaggerFeature());
-            var manager = new IpModuleManager(module);
-           
-            manager.DeviceStatusChanged += (sender, args) =>
-            {
-                logger.DebugFormat("{0}:{1}[{2}]", args.Device.Name, args.Device.Status, args.Device.ZoneId);
-                var settings = container.Resolve<SmartThingsSettings>();
-                var cb = new SmartThingsCallbacks(settings);
-                cb.PutDeviceUpdate(args.Device);
-            };
 
-            manager.PartitionStatusChanged += (sender, args) =>
+            bool smartThingsEnabled = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSmartThings"]);
+            if (smartThingsEnabled)
             {
-                logger.DebugFormat("{0}:{1}", args.Partition.Name, args.Partition.Status);
-                var settings = container.Resolve<SmartThingsSettings>();
-                var cb = new SmartThingsCallbacks(settings);
-                cb.PutPartitionUpdate(args.Partition);
-            };
+                Plugins.Add(new SmartThingsPlugin());
+            }
+
+            var manager = new IpModuleManager(module);
 
             // try one attempt to logout/login if can't login initially
             if (!manager.Login())
@@ -100,20 +87,13 @@ namespace Paradox.WebServices
             {
                 logger.Error("Problem logging in and getting alarm information. Services will start but Alarm host will not be connected.");
             }
-             
-            
+
             container.Register(manager);
-
-            var settingsProvider = new SettingsProviderNet.SettingsProvider(new RoamingAppDataStorage("Paradox"));
-            var mySettings = settingsProvider.GetSettings<SmartThingsSettings>();
-
-            container.Register(mySettings);
 
             alarmStatusCheckThread = new Thread(manager.StartStatusUpdates);
             container.Register(alarmStatusCheckThread);
-
             alarmStatusCheckThread.Start();
-         
+
         }
 
         public override ServiceStackHost Start(string urlBase)
@@ -124,12 +104,12 @@ namespace Paradox.WebServices
 
         private void StartNotificationListener()
         {
-            //bool start = Convert.ToBoolean(ConfigurationManager.AppSettings["runMailServer"]);
-            //if (!start)
-            //    return;
+            bool start = Convert.ToBoolean(ConfigurationManager.AppSettings["runMailServer"]);
+            if (!start)
+                return;
 
-            //notificationListenerThread = new Thread(ParadoxNotificationListener.Main);
-            //notificationListenerThread.Start();
+            notificationListenerThread = new Thread(ParadoxNotificationListener.Main);
+            notificationListenerThread.Start();
         }
     }
 }

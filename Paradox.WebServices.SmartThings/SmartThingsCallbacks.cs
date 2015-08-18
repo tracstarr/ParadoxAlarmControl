@@ -1,12 +1,13 @@
-﻿using Paradox.WebServices.Settings;
+﻿using Paradox.WebServices.SmartThings.Settings;
+using ParadoxIp;
 using ParadoxIp.Enum;
 using ParadoxIp.Model;
 using RestSharp;
 
-namespace Paradox.WebServices.Services
+namespace Paradox.WebServices.SmartThings
 {
     /// This functionality is directly linked to the SmartThings app. The endpoints are defined there that are used.
-    internal class SmartThingsCallbacks
+    public class SmartThingsCallbacks : IParadoxEventCallbacks
     {
         const string SmartthingsUrl = "https://graph.api.smartthings.com";
 

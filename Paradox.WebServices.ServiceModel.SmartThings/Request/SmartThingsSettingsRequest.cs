@@ -1,8 +1,8 @@
 using ServiceStack;
 
-namespace Paradox.WebServices.ServiceModel.Request
+namespace Paradox.WebServices.ServiceModel.SmartThings.Request
 {
-    [Route("/configure", "PUT", Summary = "Configure SmartThings Hub information.")]
+    [Route("/smartthings/configure", "PUT", Summary = "Configure SmartThings Hub information.")]
     public class SmartThingsSettingsRequest
     {
         public string Location { get; set; }
