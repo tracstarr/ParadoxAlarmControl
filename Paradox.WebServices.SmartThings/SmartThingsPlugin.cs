@@ -19,16 +19,6 @@ namespace Paradox.WebServices.SmartThings
 
         public void Configure(IAppHost appHost)
         {
-            var ssHost = appHost as ServiceStackHost;
-            if (ssHost != null)
-            {
-                
-            }
-            else
-            {
-                logger.Error("Not able to determine service name for Response Filter Heading");
-            }
-
             var settingsProvider = new SettingsProvider(new RoamingAppDataStorage("Paradox"));
             var mySettings = settingsProvider.GetSettings<SmartThingsSettings>();
             var container = appHost.GetContainer();
