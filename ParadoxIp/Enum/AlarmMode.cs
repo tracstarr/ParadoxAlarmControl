@@ -6,6 +6,7 @@
         ForceArm,
         StayArm,
         InstantArm,
-        Disarm
+        Disarm,
+        SleepArm
     }
 }
