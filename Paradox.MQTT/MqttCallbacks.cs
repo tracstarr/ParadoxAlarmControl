@@ -34,7 +34,7 @@ namespace Paradox.MQTT
             if (partition.Status == PartitionStatus.Unknown)
                 return;
 
-            string topic = string.Format("{0}/partition/{1}/state",settings.RootTopic, (int)partition.Id);
+            string topic = string.Format("{0}/partition/{1}/status",settings.RootTopic, (int)partition.Id);
             client.Connect(settings.ClientId);
             client.Publish(topic, Encoding.UTF8.GetBytes(partition.Status.ToString()), settings.QosLevel, settings.Retain);
             logger.DebugFormat("{0}[{1}]",topic, partition.Status);
