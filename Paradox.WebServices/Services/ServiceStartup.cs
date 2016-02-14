@@ -12,7 +12,7 @@ namespace Paradox.WebServices.Services
     {
         static ParadoxAppListenerHost appHost;
 
-        public static string ListeningOn => ConfigurationManager.AppSettings["listenOn"];
+        public static readonly string ListeningOn = ConfigurationManager.AppSettings["listenOn"];
 
         public static void Run()
         {
@@ -37,7 +37,8 @@ namespace Paradox.WebServices.Services
 
         public static void Stop()
         {
-            appHost?.Stop();
+            if (appHost != null)
+                appHost.Stop();
         }
 
         public static AppHostHttpListenerBase GetAppHostListner()

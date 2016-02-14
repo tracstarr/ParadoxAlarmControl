@@ -2,7 +2,7 @@
 ![alt tag](https://tracstarr.visualstudio.com/DefaultCollection/_apis/public/build/definitions/147e7233-581d-4dd3-89c3-70d85e2224a5/1/badge)
 
 # ParadoxAlarmControl
-Control your Paradox Alarm via IP150/IP100 modules via RESTful services. Includes SmartThings integration.
+Control your Paradox Alarm via IP150/IP100 modules via RESTful services. Includes SmartThings integration and MQTT publishing.
 
 To compile and run you will need to download PhantomJS.exe as it's included in the project files and necessary for tests and the main Paradox IP assembly. 
 
@@ -14,5 +14,5 @@ Must use PhantomJS 2.45 and related nuget packages for selenium. The nuget packa
 
 Swagger is used to allow manually testing endpoints. It can be reached at http://localhost:8876/swagger-ui (or whatever ip/port you setup).
 
-The Linux build is untested. You will need a PhantomJS linux build.
+If running under linux you will need a PhantomJS linux build.
 

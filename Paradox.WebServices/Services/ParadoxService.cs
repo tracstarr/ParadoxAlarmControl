@@ -95,9 +95,9 @@ namespace Paradox.WebServices.Services
             var device = manager.Devices.SingleOrDefault(d => d.ZoneId.ToString() == request.ZoneId);
             if (device != null)
             {
-                if (request.SendEvent)
+                if (request.SendEvent && callbacks != null)
                 {
-                    callbacks?.PutDeviceUpdate(device);
+                    callbacks.PutDeviceUpdate(device);
                 }
                 return device.Status.ToString();
             }
@@ -115,9 +115,9 @@ namespace Paradox.WebServices.Services
             var partition = manager.Partitions.SingleOrDefault(d => (int)d.Id == request.Id);
             if (partition != null)
             {
-                if (request.SendEvent)
+                if (request.SendEvent && callbacks != null)
                 {
-                    callbacks?.PutPartitionUpdate(partition);
+                    callbacks.PutPartitionUpdate(partition);
                 }
                 return partition.Status.ToString();
             }
@@ -136,12 +136,14 @@ namespace Paradox.WebServices.Services
 
                 foreach (var partition in manager.Partitions)
                 {
-                    callbacks?.PutPartitionUpdate(partition);
+                    if (callbacks != null)
+                        callbacks.PutPartitionUpdate(partition);
                 }
 
                 foreach (var device in manager.Devices)
                 {
-                    callbacks?.PutDeviceUpdate(device);
+                    if (callbacks != null)
+                        callbacks.PutDeviceUpdate(device);
                 }
             }
             catch (Exception exception)

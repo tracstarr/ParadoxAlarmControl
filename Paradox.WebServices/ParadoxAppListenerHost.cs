@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Threading;
 using Funq;
+using Paradox.MQTT;
 using Paradox.WebServices.Services;
 using Paradox.WebServices.SmartThings;
 using ParadoxIp.Managers;
@@ -67,6 +68,12 @@ namespace Paradox.WebServices
             if (smartThingsEnabled)
             {
                 Plugins.Add(new SmartThingsPlugin());
+            }
+
+            bool mqttEnabled = Convert.ToBoolean(ConfigurationManager.AppSettings["enableMQTT"]);
+            if (mqttEnabled)
+            {
+                Plugins.Add(new MqttPlugin());
             }
 
             var manager = new IpModuleManager(module);

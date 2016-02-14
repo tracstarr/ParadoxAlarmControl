@@ -1,4 +1,5 @@
-﻿using Paradox.WebServices.SmartThings.Settings;
+﻿using System;
+using Paradox.WebServices.SmartThings.Settings;
 using ParadoxIp;
 using ParadoxIp.Enum;
 using ParadoxIp.Model;
@@ -19,12 +20,12 @@ namespace Paradox.WebServices.SmartThings
         {
             this.settings = settings;
             client = new RestClient(SmartthingsUrl);
-            rootPath = string.Format("/api/smartapps/installations/{0}/", settings.ApplicationId);
+            rootPath = string.Format("/api/smartapps/installations/{0}/",settings.ApplicationId);
         }
 
         public bool Authorization()
         {
-            string path = string.Format("{0}link", rootPath);
+            string path = String.Format("{0}link",rootPath);
             var request = new RestRequest(path, Method.GET) {RequestFormat = DataFormat.Json};
             request.AddQueryParameter("access_token", settings.AccessToken);
             
@@ -34,7 +35,7 @@ namespace Paradox.WebServices.SmartThings
 
         public bool AuthorizationRevoke()
         {
-            string path = string.Format("{0}revoke", rootPath);
+            string path = String.Format("{0}revoke",rootPath);
             var request = new RestRequest(path, Method.GET) { RequestFormat = DataFormat.Json };
             request.AddQueryParameter("access_token", settings.AccessToken);
 
@@ -42,30 +43,30 @@ namespace Paradox.WebServices.SmartThings
             return response.Content.Contains("ok");
         }
 
-        public bool PutDeviceUpdate(Device device)
+        public void PutDeviceUpdate(Device device)
         {
             if (device.Status == DeviceStatus.Unknown)
-                return false;
+                return;
 
-            string path = string.Format("{0}zone/{1}/{2}", rootPath, device.ZoneId, (int)device.Status);
+            string path = string.Format("{0}zone/{1}/{2}",rootPath, device.ZoneId, (int) device.Status);
             var request = new RestRequest(path, Method.PUT) { RequestFormat = DataFormat.Json };
             request.AddQueryParameter("access_token", settings.AccessToken);
             
             var response = client.Execute(request);
-            return response.Content.Contains("ok");
+            //return response.Content.Contains("ok");
         }
 
-        public bool PutPartitionUpdate(Partition partition)
+        public void PutPartitionUpdate(Partition partition)
         {
             if (partition.Status == PartitionStatus.Unknown)
-                return false;
-
-            string path = string.Format("{0}partition/{1}/{2}", rootPath, (int)partition.Id, (int)partition.Status);
+                return;
+            
+            string path = string.Format("{0}partition/{1}/{2}",rootPath, partition.Id, (int) partition.Status);
             var request = new RestRequest(path, Method.PUT) { RequestFormat = DataFormat.Json };
             request.AddQueryParameter("access_token", settings.AccessToken);
 
             var response = client.Execute(request);
-            return response.Content.Contains("ok");     
+            //return response.Content.Contains("ok");     
         }
     }
 }

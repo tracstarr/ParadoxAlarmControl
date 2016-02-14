@@ -214,7 +214,7 @@ namespace ParadoxIp.Managers
                 case AlarmMode.SleepArm:
                     return "p";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(mode));
+                    throw new ArgumentOutOfRangeException("mode");
             }
         }
         public void GetAlarmInformation()

@@ -5,7 +5,7 @@ namespace ParadoxIp
 {
     public interface IParadoxEventCallbacks
     {
-        bool PutDeviceUpdate(Device device);
-        bool PutPartitionUpdate(Partition partition);
+        void PutDeviceUpdate(Device device);
+        void PutPartitionUpdate(Partition partition);
     }
 }
