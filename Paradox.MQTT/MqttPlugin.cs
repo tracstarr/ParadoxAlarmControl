@@ -1,8 +1,10 @@
+using Funq;
 using ParadoxIp;
 using ParadoxIp.Managers;
 using ServiceStack;
 using ServiceStack.Logging;
 using SettingsProviderNet;
+using uPLibrary.Networking.M2Mqtt;
 
 namespace Paradox.MQTT
 {
@@ -21,7 +23,8 @@ namespace Paradox.MQTT
             var mySettings = settingsProvider.GetSettings<ParadoxMqttSettings>();
             var container = appHost.GetContainer();
             container.Register(mySettings);
-            container.RegisterAs<MqttCallbacks, IParadoxEventCallbacks>();
+            container.Register(new MqttClient(mySettings.BrokerUrl));
+            container.RegisterAs<MqttCallbacks, IParadoxEventCallbacks>().ReusedWithin(ReuseScope.Container);
         }
 
         public void AfterPluginsLoaded(IAppHost appHost)
@@ -34,15 +37,13 @@ namespace Paradox.MQTT
 
                 manager.DeviceStatusChanged += (sender, args) =>
                 {
-                    var settings = container.Resolve<ParadoxMqttSettings>();
-                    var cb = new MqttCallbacks(settings);
+                    var cb = container.Resolve<IParadoxEventCallbacks>();
                     cb.PutDeviceUpdate(args.Device);
                 };
 
                 manager.PartitionStatusChanged += (sender, args) =>
                 {
-                    var settings = container.Resolve<ParadoxMqttSettings>();
-                    var cb = new MqttCallbacks(settings);
+                    var cb = container.Resolve<IParadoxEventCallbacks>();
                     cb.PutPartitionUpdate(args.Partition);
                 };
             }

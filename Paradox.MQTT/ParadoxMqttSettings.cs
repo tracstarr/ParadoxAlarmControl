@@ -6,7 +6,7 @@ namespace Paradox.MQTT
 {
     public class ParadoxMqttSettings
     {
-        [DefaultValue("localhost")]
+        [DefaultValue("192.168.20.181")]
         public string BrokerUrl { get; set; }
         [DefaultValue("ParadoxWebServices")]
         public string ClientId { get; set; }
