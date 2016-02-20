@@ -57,10 +57,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Paradox.WebServices.SmartThings\Paradox.WebServices.SmartThings.csproj">
-      <Project>{197c206d-6030-4c05-86e1-2291bf6c4a44}</Project>
-      <Name>Paradox.WebServices.SmartThings</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Paradox.WebServices\Paradox.WebServices.csproj">
       <Project>{c1bfbe4b-2125-49d4-84b7-e6cbec92ca42}</Project>
       <Name>Paradox.WebServices</Name>

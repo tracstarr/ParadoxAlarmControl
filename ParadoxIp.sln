@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParadoxIpTest", "ParadoxIpT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WinService", "Paradox.WinService\Paradox.WinService.csproj", "{F74486FD-84A8-46C4-ADF8-7402CE06235F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmartThings", "SmartThings", "{FF3D87C7-E3DA-4C9B-8277-73405627A5A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C952F995-ACCD-4E15-8226-DBC0DD609E80}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -28,23 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{257B0F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.ServiceModel", "Paradox.WebServices.ServiceModel\Paradox.WebServices.ServiceModel.csproj", "{75533B60-3776-48B5-A902-59CD90A10330}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devicetypes", "devicetypes", "{6EAB5E6C-EF30-4431-B73C-7CD8435F6BEE}"
-	ProjectSection(SolutionItems) = preProject
-		devicetypes\tracstarr\paradox-alarm-panel.src\paradox-alarm-panel.groovy = devicetypes\tracstarr\paradox-alarm-panel.src\paradox-alarm-panel.groovy
-		devicetypes\tracstarr\paradox-motion-sensor.src\paradox-motion-sensor.groovy = devicetypes\tracstarr\paradox-motion-sensor.src\paradox-motion-sensor.groovy
-		devicetypes\tracstarr\paradox-open\close-sensor.src\paradox-open-close-sensor.groovy = devicetypes\tracstarr\paradox-open\close-sensor.src\paradox-open-close-sensor.groovy
-		devicetypes\tracstarr\paradox-smoke-detector.src\paradox-smoke-detector.groovy = devicetypes\tracstarr\paradox-smoke-detector.src\paradox-smoke-detector.groovy
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "smartapps", "smartapps", "{2B132925-C27F-42C6-A97A-D0F31DEFD790}"
-	ProjectSection(SolutionItems) = preProject
-		smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy = smartapps\tracstarr\paradox-connect.src\paradox-connect.groovy
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.SmartThings", "Paradox.WebServices.SmartThings\Paradox.WebServices.SmartThings.csproj", "{197C206D-6030-4C05-86E1-2291BF6C4A44}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.WebServices.ServiceModel.SmartThings", "Paradox.WebServices.ServiceModel.SmartThings\Paradox.WebServices.ServiceModel.SmartThings.csproj", "{7C121D22-DF97-4030-93E3-B15163FA14A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paradox.MQTT", "Paradox.MQTT\Paradox.MQTT.csproj", "{C917F4E5-39E8-4183-A591-D8583A460F2B}"
 EndProject
@@ -78,14 +59,6 @@ Global
 		{75533B60-3776-48B5-A902-59CD90A10330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75533B60-3776-48B5-A902-59CD90A10330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75533B60-3776-48B5-A902-59CD90A10330}.Release|Any CPU.Build.0 = Release|Any CPU
-		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{197C206D-6030-4C05-86E1-2291BF6C4A44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C121D22-DF97-4030-93E3-B15163FA14A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C917F4E5-39E8-4183-A591-D8583A460F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C917F4E5-39E8-4183-A591-D8583A460F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C917F4E5-39E8-4183-A591-D8583A460F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,9 +66,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6EAB5E6C-EF30-4431-B73C-7CD8435F6BEE} = {FF3D87C7-E3DA-4C9B-8277-73405627A5A8}
-		{2B132925-C27F-42C6-A97A-D0F31DEFD790} = {FF3D87C7-E3DA-4C9B-8277-73405627A5A8}
 	EndGlobalSection
 EndGlobal

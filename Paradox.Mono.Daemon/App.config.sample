@@ -9,8 +9,6 @@
     <add key="panelCode" value=""/>
     <add key="password" value=""/>
     <add key="runMailServer" value="false"/>
-    <add key="enableSmartThings" value="true"/>
-    <add key="enableMQTT" value="true"/>
     <add key="servicestack:license" value=""/>
 
   </appSettings>

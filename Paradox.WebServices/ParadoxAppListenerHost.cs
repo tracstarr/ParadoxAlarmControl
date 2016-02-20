@@ -4,7 +4,6 @@ using System.Threading;
 using Funq;
 using Paradox.MQTT;
 using Paradox.WebServices.Services;
-using Paradox.WebServices.SmartThings;
 using ParadoxIp.Managers;
 using ParadoxIp.Model;
 using ServiceStack;
@@ -63,18 +62,7 @@ namespace Paradox.WebServices
 
             JsConfig.EmitCamelCaseNames = true;
             Plugins.Add(new SwaggerFeature());
-
-            bool smartThingsEnabled = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSmartThings"]);
-            if (smartThingsEnabled)
-            {
-                Plugins.Add(new SmartThingsPlugin());
-            }
-
-            bool mqttEnabled = Convert.ToBoolean(ConfigurationManager.AppSettings["enableMQTT"]);
-            if (mqttEnabled)
-            {
-                Plugins.Add(new MqttPlugin());
-            }
+            Plugins.Add(new MqttPlugin());
 
             var manager = new IpModuleManager(module);
 

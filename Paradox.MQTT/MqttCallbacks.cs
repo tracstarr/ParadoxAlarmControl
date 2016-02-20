@@ -27,6 +27,7 @@ namespace Paradox.MQTT
             client.Connect(settings.ClientId);
             client.Publish(topic, Encoding.UTF8.GetBytes(device.Status.ToString()), settings.QosLevel, settings.Retain);
             logger.DebugFormat("{0}[{1}]",topic, device.Status);
+            client.Disconnect();
         }
 
         public void PutPartitionUpdate(Partition partition)
@@ -38,6 +39,7 @@ namespace Paradox.MQTT
             client.Connect(settings.ClientId);
             client.Publish(topic, Encoding.UTF8.GetBytes(partition.Status.ToString()), settings.QosLevel, settings.Retain);
             logger.DebugFormat("{0}[{1}]",topic, partition.Status);
+            client.Disconnect();
         }
     }
 

@@ -2,7 +2,7 @@
 ![alt tag](https://tracstarr.visualstudio.com/DefaultCollection/_apis/public/build/definitions/147e7233-581d-4dd3-89c3-70d85e2224a5/1/badge)
 
 # ParadoxAlarmControl
-Control your Paradox Alarm via IP150/IP100 modules via RESTful services. Includes SmartThings integration and MQTT publishing.
+Control your Paradox Alarm via IP150/IP100 modules via RESTful services. Includes MQTT publishing.
 
 To compile and run you will need to download PhantomJS.exe as it's included in the project files and necessary for tests and the main Paradox IP assembly. 
 

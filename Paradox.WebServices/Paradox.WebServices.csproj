@@ -104,10 +104,6 @@
       <Project>{75533b60-3776-48b5-a902-59cd90a10330}</Project>
       <Name>Paradox.WebServices.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Paradox.WebServices.SmartThings\Paradox.WebServices.SmartThings.csproj">
-      <Project>{197C206D-6030-4C05-86E1-2291BF6C4A44}</Project>
-      <Name>Paradox.WebServices.SmartThings</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ParadoxIp\ParadoxIp.csproj">
       <Project>{c3c19bed-60f3-4635-88ca-b3fe1dfa60c0}</Project>
       <Name>ParadoxIp</Name>
