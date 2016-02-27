@@ -52,11 +52,11 @@
     <MSBuild Targets="Clean" Projects="@(Solution)" Properties="$(Properties)" />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages,AppConfigFiles">
+  <Target Name="Build" DependsOnTargets="RestorePackages;AppConfigFiles">
     <MSBuild Targets="Build" Projects="@(Solution)" Properties="$(Properties)" />
   </Target>
 
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages">
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;AppConfigFiles">
     <MSBuild Targets="Rebuild" Projects="@(Solution)" Properties="$(Properties)" />
   </Target>
 
